@@ -110,7 +110,7 @@ class GothicRoulette {
         const spins = 25 + Math.floor(Math.random() * 16);
         const targetAngle = this.currentAngle + (spins * 2 * Math.PI) + (Math.random() * 2 * Math.PI);
         const startTime = performance.now();
-        const duration = 7000; // 7 секунд
+        const duration = 10000; // 7 секунд
         
         const animate = (currentTime) => {
             const elapsed = currentTime - startTime;
