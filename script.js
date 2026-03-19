@@ -104,18 +104,21 @@ class GothicRoulette {
             document.getElementById('spinSound').play();
         } catch (e) {}
         
-        const spins = 15 + Math.floor(Math.random() * 10);
+        // Увеличил количество оборотов и длительность
+        const spins = 20 + Math.floor(Math.random() * 15); // 20-35 оборотов
         const targetAngle = this.currentAngle + (spins * 2 * Math.PI) + (Math.random() * 2 * Math.PI);
         const startTime = performance.now();
-        const duration = 3000; // 3 секунды
+        const duration = 6000; // 6 секунд
         
         const animate = (currentTime) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
             
-            // Плавное замедление
-            const easeOut = 1 - Math.pow(1 - progress, 3);
-            this.currentAngle = this.currentAngle + (targetAngle - this.currentAngle) * easeOut;
+            // Более инертное замедление (cubic-bezier)
+            // Имитация физики: сначала быстро, потом плавно замедляется
+            const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+            
+            this.currentAngle = this.currentAngle + (targetAngle - this.currentAngle) * easeOutCubic;
             
             this.drawWheel();
             
@@ -133,7 +136,8 @@ class GothicRoulette {
     }
     
     showResult() {
-        // Определяем, на какой сектор указывает стрелка (условно вверх)
+        // Определяем, на какой сектор указывает стрелка
+        // Стрелка всегда сверху (угол -90 градусов или 3*PI/2)
         const pointerAngle = (3 * Math.PI / 2) - this.currentAngle;
         let normalizedAngle = ((pointerAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
         const segmentIndex = Math.floor((normalizedAngle / (2 * Math.PI)) * this.segments.length);
