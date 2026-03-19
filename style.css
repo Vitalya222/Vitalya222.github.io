@@ -8,7 +8,6 @@
 
 body {
     min-height: 100vh;
-    /* Твоя картинка на фоне */
     background-image: url('https://i.postimg.cc/SN8ZPBHg/58709dac2175c15977e7e869.jpg');
     background-size: cover;
     background-position: center;
@@ -21,7 +20,7 @@ body {
     position: relative;
 }
 
-/* Тёмная вуаль поверх картинки, чтобы белый текст не терялся */
+/* Тёмная вуаль */
 body::after {
     content: '';
     position: fixed;
@@ -29,40 +28,25 @@ body::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.65); /* Немного затемнил, чтобы контраст был */
-    pointer-events: none; /* Чтобы сквозь вуаль можно было нажимать кнопки */
+    background: rgba(0, 0, 0, 0.65);
+    pointer-events: none;
     z-index: 1;
 }
 
-/* Старая текстура убрана, теперь фоном служит картинка */
-
-/* Чёрные розы — сделаем их чуть ярче, чтобы выделялись на тёмном фоне */
-.rose {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 0.25; /* Чуть повысил видимость */
-    z-index: 2; /* Чтобы розы были над вуалью, но под контентом? Сделаем над, но полупрозрачными */
-    filter: drop-shadow(0 0 15px #b8860b); /* Тёплый металлик вместо сиреневого */
+/* Эффект освещения с потолка */
+.ceiling-light {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255, 215, 0, 0.25) 0%, transparent 70%);
     pointer-events: none;
+    z-index: 2;
+    mix-blend-mode: overlay;
 }
 
-.rose.left {
-    left: 20px;
-    bottom: 20px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23b8860b" d="M50 15c-5 0-10 5-10 15 0 10 10 20 10 30s-10 15-20 15c-10 0-15-10-15-20 0-15 15-25 15-40 0-10-5-15-15-15-15 0-25 15-25 30 0 20 15 35 15 55 0 10-5 15-5 20h10c0-5 5-10 5-20 0-25-15-35-15-55 0-10 5-15 10-15 5 0 10 5 10 15 0 25-15 40-15 55 0 10 5 20 15 20s20-10 20-25c0-20-15-30-15-45 0-10 5-15 10-15 5 0 10 5 10 10 0 15-15 25-15 40 0 10 5 15 10 15 5 0 10-5 10-15 0-20-15-30-15-45 0-15 5-25 15-25 5 0 10 5 10 10 0 15-15 30-15 45 0 10 5 20 15 20 10 0 15-10 15-20 0-25-25-40-25-60 0-10 5-15 10-15 5 0 10 5 10 15 0 25-20 40-20 55 0 10 5 15 15 15 5 0 10-5 10-15 0-30-25-45-25-65 0-10 5-15 10-15 5 0 10 5 10 15 0 25-20 40-20 55 0 10 5 15 15 15 5 0 10-5 10-15 0-30-25-45-25-65 0-10 5-15 10-15z"/></svg>');
-}
-
-.rose.right {
-    right: 20px;
-    top: 20px;
-    transform: rotate(90deg);
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23b8860b" d="M50 15c-5 0-10 5-10 15 0 10 10 20 10 30s-10 15-20 15c-10 0-15-10-15-20 0-15 15-25 15-40 0-10-5-15-15-15-15 0-25 15-25 30 0 20 15 35 15 55 0 10-5 15-5 20h10c0-5 5-10 5-20 0-25-15-35-15-55 0-10 5-15 10-15 5 0 10 5 10 15 0 25-15 40-15 55 0 10 5 20 15 20s20-10 20-25c0-20-15-30-15-45 0-10 5-15 10-15 5 0 10 5 10 10 0 15-15 25-15 40 0 10 5 15 10 15 5 0 10-5 10-15 0-20-15-30-15-45 0-15 5-25 15-25 5 0 10 5 10 10 0 15-15 30-15 45 0 10 5 20 15 20 10 0 15-10 15-20 0-25-25-40-25-60 0-10 5-15 10-15 5 0 10 5 10 15 0 25-20 40-20 55 0 10 5 15 15 15 5 0 10-5 10-15 0-30-25-45-25-65 0-10 5-15 10-15 5 0 10 5 10 15 0 25-20 40-20 55 0 10 5 15 15 15 5 0 10-5 10-15 0-30-25-45-25-65 0-10 5-15 10-15z"/></svg>');
-}
-
-/* Контейнер рулетки — поднимаем над вуалью */
+/* Контейнер рулетки */
 .roulette-container {
     position: relative;
     z-index: 10;
@@ -70,24 +54,55 @@ body::after {
     max-width: 800px;
     width: 100%;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+/* Кнопка теперь над колесом */
+.gothic-button {
+    background: linear-gradient(145deg, #2d1b3a, #0a0515);
+    border: 2px solid #c0c0c0;
+    border-radius: 50px;
+    padding: 15px 40px;
+    margin-bottom: 30px; /* Отступ снизу, чтобы не прилипало к колесу */
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 30px #b8860b;
+    transition: all 0.3s;
+    display: inline-block;
+    order: -1; /* Принудительно ставим кнопку первой */
+}
+
+.gothic-button:hover {
+    box-shadow: 0 0 50px #b8860b;
+    border-color: #b8860b;
+    transform: scale(1.05);
+}
+
+.gothic-button:active {
+    transform: scale(0.95);
+}
+
+/* Колесо */
 .wheel-wrapper {
     position: relative;
     width: 100%;
     max-width: 600px;
     height: auto;
     aspect-ratio: 1 / 1;
-    margin: 0 auto;
+    margin: 20px auto; /* Отступы сверху и снизу */
 }
 
 #rouletteWheel {
     width: 100%;
     height: 100%;
     display: block;
-    filter: drop-shadow(0 0 30px #b8860b); /* Золотистое свечение под картинку */
+    filter: drop-shadow(0 0 30px #b8860b);
 }
 
+/* Центр колеса */
 .center-rose {
     position: absolute;
     top: 50%;
@@ -108,33 +123,8 @@ body::after {
 
 .center-rose::after {
     content: '🖤';
-    color: #b8860b; /* Золотой вместо розового */
+    color: #b8860b;
     text-shadow: 0 0 20px #b8860b;
-}
-
-/* Готическая кнопка */
-.gothic-button {
-    background: linear-gradient(145deg, #2d1b3a, #0a0515);
-    border: 2px solid #c0c0c0;
-    border-radius: 50px;
-    padding: 15px 40px;
-    margin: 30px auto;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 30px #b8860b;
-    transition: all 0.3s;
-    display: inline-block;
-}
-
-.gothic-button:hover {
-    box-shadow: 0 0 50px #b8860b;
-    border-color: #b8860b;
-    transform: scale(1.05);
-}
-
-.gothic-button:active {
-    transform: scale(0.95);
 }
 
 /* Металлический текст */
@@ -152,15 +142,15 @@ body::after {
     white-space: nowrap;
 }
 
-/* Результат в виде свитка */
+/* Результат */
 .result-scroll {
-    background: rgba(10, 5, 20, 0.8); /* Чуть темнее и плотнее */
+    background: rgba(10, 5, 20, 0.8);
     backdrop-filter: blur(5px);
     border: 2px solid #c0c0c0;
     border-radius: 20px;
     padding: 15px 30px;
     min-width: 250px;
-    margin: 20px auto;
+    margin: 30px auto 0;
     box-shadow: 0 0 30px #b8860b;
     display: inline-block;
 }
@@ -168,23 +158,23 @@ body::after {
 #resultText {
     font-size: clamp(18px, 4vw, 24px);
     min-height: 40px;
-    color: #f0f0f0; /* Светлый цвет для читаемости */
+    color: #f0f0f0;
     text-shadow: 1px 1px 2px black;
 }
 
-/* Медиа-запросы для мобилок */
+/* Адаптивность */
 @media (max-width: 768px) {
-    .rose {
-        width: 100px;
-        height: 100px;
-    }
-    
     .gothic-button {
         padding: 12px 30px;
+        margin-bottom: 20px;
     }
     
     .result-scroll {
         padding: 12px 20px;
         min-width: 200px;
+    }
+    
+    .ceiling-light {
+        height: 200px;
     }
 }
