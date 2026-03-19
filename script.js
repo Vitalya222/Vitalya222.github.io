@@ -39,7 +39,7 @@ class GothicRoulette {
         ctx.clearRect(0, 0, width, height);
         
         // Внешнее свечение
-        ctx.shadowColor = '#8a2be2';
+        ctx.shadowColor = '#b8860b';
         ctx.shadowBlur = 30;
         
         // Рисуем сектора
@@ -86,7 +86,7 @@ class GothicRoulette {
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius * 0.2, 0, 2 * Math.PI);
         ctx.fillStyle = '#2d1b3a';
-        ctx.shadowColor = '#ff006e';
+        ctx.shadowColor = '#b8860b';
         ctx.fill();
         ctx.strokeStyle = '#c0c0c0';
         ctx.lineWidth = 3;
@@ -97,59 +97,57 @@ class GothicRoulette {
         if (this.isSpinning) return;
         
         this.isSpinning = true;
+        // Показываем процесс вращения
         this.resultText.textContent = '🔄 КРУТИТСЯ...';
         
-        // Проигрываем звук (если разрешено)
+        // Звук (опционально)
         try {
-            document.getElementById('spinSound').play();
+            const sound = document.getElementById('spinSound');
+            if (sound) sound.play();
         } catch (e) {}
         
-        // Увеличил количество оборотов и длительность
-        const spins = 20 + Math.floor(Math.random() * 15); // 20-35 оборотов
+        // Супер-инертное вращение: 25-40 оборотов, 7 секунд
+        const spins = 25 + Math.floor(Math.random() * 16);
         const targetAngle = this.currentAngle + (spins * 2 * Math.PI) + (Math.random() * 2 * Math.PI);
         const startTime = performance.now();
-        const duration = 6000; // 6 секунд
+        const duration = 7000; // 7 секунд
         
         const animate = (currentTime) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
             
-            // Более инертное замедление (cubic-bezier)
-            // Имитация физики: сначала быстро, потом плавно замедляется
-            const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+            // Очень плавное замедление (easeOutQuart)
+            const easeOutQuart = 1 - Math.pow(1 - progress, 5);
             
-            this.currentAngle = this.currentAngle + (targetAngle - this.currentAngle) * easeOutCubic;
+            this.currentAngle = this.currentAngle + (targetAngle - this.currentAngle) * easeOutQuart;
             
             this.drawWheel();
             
             if (progress < 1) {
                 requestAnimationFrame(animate);
             } else {
+                // Анимация завершена — теперь показываем результат
                 this.isSpinning = false;
                 this.currentAngle = targetAngle % (2 * Math.PI);
                 this.drawWheel();
-                this.showResult();
+                
+                // Вычисляем и показываем выигрыш
+                const pointerAngle = (3 * Math.PI / 2) - this.currentAngle;
+                let normalizedAngle = ((pointerAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+                const segmentIndex = Math.floor((normalizedAngle / (2 * Math.PI)) * this.segments.length);
+                
+                const prize = this.segments[segmentIndex];
+                this.resultText.textContent = `${prize.label} | ${prize.value} 💀`;
+                
+                // Эффект свечения
+                this.resultText.style.textShadow = '0 0 30px #b8860b';
+                setTimeout(() => {
+                    this.resultText.style.textShadow = 'none';
+                }, 1000);
             }
         };
         
         requestAnimationFrame(animate);
-    }
-    
-    showResult() {
-        // Определяем, на какой сектор указывает стрелка
-        // Стрелка всегда сверху (угол -90 градусов или 3*PI/2)
-        const pointerAngle = (3 * Math.PI / 2) - this.currentAngle;
-        let normalizedAngle = ((pointerAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-        const segmentIndex = Math.floor((normalizedAngle / (2 * Math.PI)) * this.segments.length);
-        
-        const prize = this.segments[segmentIndex];
-        this.resultText.textContent = `${prize.label} | ${prize.value} 💀`;
-        
-        // Эффект свечения
-        this.resultText.style.textShadow = '0 0 30px #ff006e';
-        setTimeout(() => {
-            this.resultText.style.textShadow = 'none';
-        }, 1000);
     }
 }
 
