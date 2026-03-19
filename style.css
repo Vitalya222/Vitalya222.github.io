@@ -178,3 +178,33 @@ body::after {
         height: 200px;
     }
 }
+/* Добавь в конец файла или после wheel-wrapper */
+
+/* Стрелка-указатель */
+.arrow-pointer {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-top: 40px solid #c0c0c0;
+    filter: drop-shadow(0 0 15px #b8860b);
+    z-index: 20;
+    pointer-events: none;
+}
+
+.arrow-pointer::after {
+    content: '';
+    position: absolute;
+    top: -45px;
+    left: -5px;
+    width: 10px;
+    height: 20px;
+    background: radial-gradient(circle, #b8860b, transparent);
+    border-radius: 50%;
+    filter: blur(5px);
+    opacity: 0.7;
+}
