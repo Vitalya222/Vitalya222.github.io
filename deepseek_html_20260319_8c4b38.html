@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦇 Готическая рулетка | Чёрная роза</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="roulette-container">
+        <!-- Декоративные элементы -->
+        <div class="rose left"></div>
+        <div class="rose right"></div>
+        <div class="candle left"></div>
+        <div class="candle right"></div>
+        
+        <!-- Основное колесо -->
+        <div class="wheel-wrapper">
+            <canvas id="rouletteWheel" width="600" height="600"></canvas>
+            <div class="center-rose"></div>
+        </div>
+        
+        <!-- Кнопка и результат -->
+        <button class="gothic-button" id="spinBtn">
+            <span class="metal-text">КРУТИТЬ</span>
+        </button>
+        
+        <div class="result-scroll" id="result">
+            <p class="metal-text" id="resultText"></p>
+        </div>
+    </div>
+    
+    <!-- Звуки для атмосферы (опционально) -->
+    <audio id="spinSound" loop>
+        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script src="script.js"></script>
+</body>
+</html>
