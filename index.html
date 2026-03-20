@@ -76,7 +76,7 @@
             font-size: 24px;
             font-family: 'Playfair Display', serif;
             color: #f0f0f0;
-            min-width: 250px;
+            min-width: 280px;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
@@ -93,14 +93,14 @@
 
     <script>
         const SEGMENTS = [
-            { name: '🖤 РОЗА', value: 10, color: '#4a1d2d' },
-            { name: '💀 ЧЕРЕП', value: 25, color: '#2d1b3a' },
-            { name: '🦇 МЫШЬ', value: 50, color: '#1a3a3a' },
-            { name: '🗡️ КИНЖАЛ', value: 100, color: '#3a1a2a' },
-            { name: '🕯️ СВЕЧА', value: 5, color: '#b8a9c9' },
-            { name: '🥀 РОЗА', value: 200, color: '#c0a080' },
-            { name: '🔮 ШАР', value: 150, color: '#ff006e' },
-            { name: '⚰️ ГРОБ', value: 500, color: '#6a0dad' }
+            { name: 'РОЗА', value: 10, color: '#4a1d2d' },
+            { name: 'ЧЕРЕП', value: 25, color: '#2d1b3a' },
+            { name: 'МЫШЬ', value: 50, color: '#1a3a3a' },
+            { name: 'КИНЖАЛ', value: 100, color: '#3a1a2a' },
+            { name: 'СВЕЧА', value: 5, color: '#b8a9c9' },
+            { name: 'РОЗА', value: 200, color: '#c0a080' },
+            { name: 'ШАР', value: 150, color: '#ff006e' },
+            { name: 'ГРОБ', value: 500, color: '#6a0dad' }
         ];
 
         const canvas = document.getElementById('wheelCanvas');
@@ -139,9 +139,12 @@
                 ctx.translate(centerX, centerY);
                 ctx.rotate(start + angleStep / 2);
                 ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
                 ctx.fillStyle = "#fff";
-                ctx.font = "bold 16px 'Playfair Display'";
-                ctx.fillText(SEGMENTS[i].name, radius * 0.7, 8);
+                ctx.font = "bold 14px 'Playfair Display'";
+                ctx.shadowBlur = 3;
+                ctx.shadowColor = "black";
+                ctx.fillText(SEGMENTS[i].name, radius * 0.65, 0);
                 ctx.restore();
             }
             
@@ -172,12 +175,12 @@
             const targetAngle = currentAngle + targetDelta;
             
             const startTime = performance.now();
-            const duration = 6000;
+            const duration = 5000;
             
             function animate(now) {
                 const elapsed = now - startTime;
                 const t = Math.min(elapsed / duration, 1);
-                const ease = 1 - Math.pow(1 - t, 4);
+                const ease = 1 - Math.pow(1 - t, 3.5);
                 currentAngle = currentAngle + (targetAngle - currentAngle) * ease;
                 drawWheel(currentAngle);
                 
