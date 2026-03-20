@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:wght@500;700&display=swap');
-
 * {
     margin: 0;
     padding: 0;
@@ -8,203 +6,76 @@
 
 body {
     min-height: 100vh;
-    background-image: url('https://i.postimg.cc/SN8ZPBHg/58709dac2175c15977e7e869.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background: radial-gradient(ellipse at center, #1a0b2e 0%, #0a0515 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: 'Playfair Display', serif;
-    position: relative;
 }
 
-/* Тёмная вуаль */
-body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.65);
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* Эффект освещения с потолка */
-.ceiling-light {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 300px;
-    background: radial-gradient(ellipse at 50% 0%, rgba(255, 215, 0, 0.25) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 2;
-    mix-blend-mode: overlay;
-}
-
-/* Контейнер рулетки */
 .roulette-container {
-    position: relative;
-    z-index: 10;
     text-align: center;
-    max-width: 800px;
-    width: 100%;
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
-/* Кнопка теперь над колесом */
-.gothic-button {
-    background: linear-gradient(145deg, #2d1b3a, #0a0515);
-    border: 2px solid #c0c0c0;
-    border-radius: 50px;
-    padding: 15px 40px;
-    margin-bottom: 30px; /* Отступ снизу, чтобы не прилипало к колесу */
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 30px #b8860b;
-    transition: all 0.3s;
-    display: inline-block;
-    order: -1; /* Принудительно ставим кнопку первой */
-}
-
-.gothic-button:hover {
-    box-shadow: 0 0 50px #b8860b;
-    border-color: #b8860b;
-    transform: scale(1.05);
-}
-
-.gothic-button:active {
-    transform: scale(0.95);
-}
-
-/* Колесо */
 .wheel-wrapper {
     position: relative;
-    width: 100%;
-    max-width: 600px;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    margin: 20px auto; /* Отступы сверху и снизу */
+    width: 500px;
+    height: 500px;
+    margin: 20px auto;
 }
 
-#rouletteWheel {
+canvas {
     width: 100%;
     height: 100%;
-    display: block;
-    filter: drop-shadow(0 0 30px #b8860b);
-}
-
-/* Центр колеса */
-.center-rose {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 15%;
-    height: 15%;
-    background: radial-gradient(circle, #4a1d2d 0%, #2d1b3a 100%);
     border-radius: 50%;
-    border: 2px solid #c0c0c0;
-    box-shadow: 0 0 30px #b8860b, inset 0 0 20px #000000;
-    z-index: 15;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: min(40px, 8vw);
+    box-shadow: 0 0 30px rgba(184, 134, 11, 0.5);
 }
 
-.center-rose::after {
-    content: '🖤';
-    color: #b8860b;
-    text-shadow: 0 0 20px #b8860b;
-}
-
-/* Металлический текст */
-.metal-text {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(20px, 5vw, 28px);
-    font-weight: 900;
-    background: linear-gradient(135deg, #ffffff 0%, #c0c0c0 50%, #808080 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-    letter-spacing: 4px;
-    position: relative;
-    z-index: 2;
-    white-space: nowrap;
-}
-
-/* Результат */
-.result-scroll {
-    background: rgba(10, 5, 20, 0.8);
-    backdrop-filter: blur(5px);
-    border: 2px solid #c0c0c0;
-    border-radius: 20px;
-    padding: 15px 30px;
-    min-width: 250px;
-    margin: 30px auto 0;
-    box-shadow: 0 0 30px #b8860b;
-    display: inline-block;
-}
-
-#resultText {
-    font-size: clamp(18px, 4vw, 24px);
-    min-height: 40px;
-    color: #f0f0f0;
-    text-shadow: 1px 1px 2px black;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-    .gothic-button {
-        padding: 12px 30px;
-        margin-bottom: 20px;
-    }
-    
-    .result-scroll {
-        padding: 12px 20px;
-        min-width: 200px;
-    }
-    
-    .ceiling-light {
-        height: 200px;
-    }
-}
-/* Добавь в конец файла или после wheel-wrapper */
-
-/* Стрелка-указатель */
 .arrow-pointer {
     position: absolute;
-    top: -20px;
+    top: -25px;
     left: 50%;
     transform: translateX(-50%);
     width: 0;
     height: 0;
     border-left: 25px solid transparent;
     border-right: 25px solid transparent;
-    border-top: 40px solid #c0c0c0;
-    filter: drop-shadow(0 0 15px #b8860b);
-    z-index: 20;
-    pointer-events: none;
+    border-top: 50px solid #c0c0c0;
+    filter: drop-shadow(0 0 10px #b8860b);
+    z-index: 10;
 }
 
-.arrow-pointer::after {
-    content: '';
-    position: absolute;
-    top: -45px;
-    left: -5px;
-    width: 10px;
-    height: 20px;
-    background: radial-gradient(circle, #b8860b, transparent);
-    border-radius: 50%;
-    filter: blur(5px);
-    opacity: 0.7;
+button {
+    background: linear-gradient(145deg, #2d1b3a, #0a0515);
+    border: 2px solid #c0c0c0;
+    border-radius: 50px;
+    padding: 15px 40px;
+    font-size: 24px;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    margin: 20px auto;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #b8860b;
+    border-color: #b8860b;
+}
+
+.result {
+    background: rgba(10, 5, 20, 0.8);
+    backdrop-filter: blur(5px);
+    border: 2px solid #c0c0c0;
+    border-radius: 20px;
+    padding: 15px 30px;
+    margin: 20px auto;
+    display: inline-block;
+    font-size: 24px;
+    font-family: 'Playfair Display', serif;
+    color: #f0f0f0;
+    min-width: 250px;
 }
