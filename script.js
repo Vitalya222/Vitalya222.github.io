@@ -1,6 +1,5 @@
 import { animate } from '@in/motion';
 
-// Готические сектора
 const SEGMENTS = [
     { name: '🖤 РОЗА', value: 10, color: '#4a1d2d' },
     { name: '💀 ЧЕРЕП', value: 25, color: '#2d1b3a' },
@@ -50,8 +49,6 @@ function drawWheel(angle) {
         ctx.textAlign = "center";
         ctx.fillStyle = "#fff";
         ctx.font = "bold 16px 'Playfair Display'";
-        ctx.shadowBlur = 4;
-        ctx.shadowColor = "black";
         ctx.fillText(SEGMENTS[i].name, radius * 0.7, 8);
         ctx.restore();
     }
@@ -103,6 +100,5 @@ function spin() {
     });
 }
 
-// Инициализация
 drawWheel(0);
 spinBtn.addEventListener('click', spin);
