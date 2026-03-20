@@ -5,22 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Готическая рулетка</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <script type="importmap">
+        {
+            "imports": {
+                "@in/motion": "https://esm.sh/@in/motion@0.7.0"
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="roulette-container">
-        <button class="gothic-button" id="spinBtn">КРУТИТЬ</button>
+        <button id="spinBtn">КРУТИТЬ</button>
         
         <div class="wheel-wrapper">
-            <canvas id="rouletteWheel" width="600" height="600"></canvas>
+            <canvas id="wheelCanvas" width="500" height="500"></canvas>
             <div class="arrow-pointer"></div>
         </div>
         
-        <div class="result-scroll" id="result">
-            <p class="metal-text" id="resultText">🖤</p>
-        </div>
+        <div class="result" id="result">🖤</div>
     </div>
-    
-    <script src="script.js"></script>
+
+    <script type="module" src="script.js"></script>
 </body>
 </html>
