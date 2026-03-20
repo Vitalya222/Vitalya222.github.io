@@ -1,110 +1,108 @@
-class GothicRoulette {
-    constructor() {
-        this.canvas = document.getElementById('rouletteWheel');
-        this.ctx = this.canvas.getContext('2d');
-        this.spinBtn = document.getElementById('spinBtn');
-        this.resultText = document.getElementById('resultText');
-        
-        this.isSpinning = false;
-        this.currentAngle = 0;
-        
-        this.segments = [
-            { label: '🖤 ЧЁРНАЯ РОЗА', value: 10, color: '#4a1d2d' },
-            { label: '💀 ЧЕРЕП', value: 25, color: '#2d1b3a' },
-            { label: '🦇 ЛЕТУЧАЯ МЫШЬ', value: 50, color: '#1a3a3a' },
-            { label: '🗡️ КИНЖАЛ', value: 100, color: '#3a1a2a' },
-            { label: '🕯️ СВЕЧА', value: 5, color: '#b8a9c9' },
-            { label: '🥀 ЧЁРНАЯ РОЗА', value: 200, color: '#c0a080' },
-            { label: '🔮 ХРУСТАЛЬНЫЙ ШАР', value: 150, color: '#ff006e' },
-            { label: '⚰️ ГРОБ', value: 500, color: '#6a0dad' }
-        ];
-        
-        this.init();
-    }
+import { animate } from '@in/motion';
+
+// Готические сектора
+const SEGMENTS = [
+    { name: '🖤 РОЗА', value: 10, color: '#4a1d2d' },
+    { name: '💀 ЧЕРЕП', value: 25, color: '#2d1b3a' },
+    { name: '🦇 МЫШЬ', value: 50, color: '#1a3a3a' },
+    { name: '🗡️ КИНЖАЛ', value: 100, color: '#3a1a2a' },
+    { name: '🕯️ СВЕЧА', value: 5, color: '#b8a9c9' },
+    { name: '🥀 РОЗА', value: 200, color: '#c0a080' },
+    { name: '🔮 ШАР', value: 150, color: '#ff006e' },
+    { name: '⚰️ ГРОБ', value: 500, color: '#6a0dad' }
+];
+
+const canvas = document.getElementById('wheelCanvas');
+const ctx = canvas.getContext('2d');
+const spinBtn = document.getElementById('spinBtn');
+const resultDiv = document.getElementById('result');
+
+let currentAngle = 0;
+let isSpinning = false;
+
+function drawWheel(angle) {
+    const w = canvas.width;
+    const h = canvas.height;
+    const centerX = w / 2;
+    const centerY = h / 2;
+    const radius = Math.min(w, h) / 2 - 10;
+    const angleStep = (Math.PI * 2) / SEGMENTS.length;
     
-    init() {
-        this.drawWheel();
-        this.spinBtn.addEventListener('click', () => this.spin());
-    }
+    ctx.clearRect(0, 0, w, h);
     
-    drawWheel() {
-        const ctx = this.ctx;
-        const width = this.canvas.width;
-        const height = this.canvas.height;
-        const centerX = width / 2;
-        const centerY = height / 2;
-        const radius = Math.min(width, height) / 2.2;
-        
-        ctx.clearRect(0, 0, width, height);
-        
-        for (let i = 0; i < this.segments.length; i++) {
-            const start = (i * 2 * Math.PI) / this.segments.length + this.currentAngle;
-            const end = ((i + 1) * 2 * Math.PI) / this.segments.length + this.currentAngle;
-            
-            ctx.beginPath();
-            ctx.moveTo(centerX, centerY);
-            ctx.arc(centerX, centerY, radius, start, end);
-            ctx.closePath();
-            ctx.fillStyle = this.segments[i].color;
-            ctx.fill();
-            
-            ctx.strokeStyle = '#c0c0c0';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-        }
+    for (let i = 0; i < SEGMENTS.length; i++) {
+        const start = i * angleStep + angle;
+        const end = (i + 1) * angleStep + angle;
         
         ctx.beginPath();
-        ctx.arc(centerX, centerY, radius * 0.2, 0, 2 * Math.PI);
-        ctx.fillStyle = '#2d1b3a';
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, start, end);
+        ctx.closePath();
+        ctx.fillStyle = SEGMENTS[i].color;
         ctx.fill();
         ctx.strokeStyle = '#c0c0c0';
         ctx.lineWidth = 3;
         ctx.stroke();
+        
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(start + angleStep / 2);
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#fff";
+        ctx.font = "bold 16px 'Playfair Display'";
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = "black";
+        ctx.fillText(SEGMENTS[i].name, radius * 0.7, 8);
+        ctx.restore();
     }
     
-    spin() {
-        if (this.isSpinning) return;
-        
-        this.isSpinning = true;
-        this.resultText.textContent = '🔄 КРУТИТСЯ...';
-        
-        // Количество оборотов и угол
-        const fullSpins = 10 + Math.random() * 8;   // 10–18 полных оборотов
-        const extraAngle = Math.random() * 2 * Math.PI;
-        const targetAngle = this.currentAngle + (fullSpins * 2 * Math.PI) + extraAngle;
-        
-        const startTime = performance.now();
-        const duration = 4500; // 4.5 секунды
-        
-        const animate = (now) => {
-            const elapsed = now - startTime;
-            const t = Math.min(elapsed / duration, 1);
-            
-            // easeOutCubic – плавное замедление, но без ощущения "залипания"
-            const ease = 1 - Math.pow(1 - t, 2.5);
-            
-            this.currentAngle = this.currentAngle + (targetAngle - this.currentAngle) * ease;
-            this.drawWheel();
-            
-            if (t < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                this.isSpinning = false;
-                this.currentAngle = targetAngle % (2 * Math.PI);
-                this.drawWheel();
-                
-                const pointerAngle = (3 * Math.PI / 2) - this.currentAngle;
-                let norm = ((pointerAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-                const idx = Math.floor((norm / (2 * Math.PI)) * this.segments.length);
-                
-                this.resultText.textContent = `${this.segments[idx].label} | ${this.segments[idx].value} 💀`;
-            }
-        };
-        
-        requestAnimationFrame(animate);
-    }
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 30, 0, Math.PI * 2);
+    ctx.fillStyle = '#1a0b2e';
+    ctx.fill();
+    ctx.strokeStyle = '#c0c0c0';
+    ctx.lineWidth = 3;
+    ctx.stroke();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    new GothicRoulette();
-});
+function getWinnerIndex(angle) {
+    const pointerAngle = Math.PI / 2;
+    let raw = pointerAngle - angle;
+    raw = ((raw % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+    return Math.floor((raw / (2 * Math.PI)) * SEGMENTS.length);
+}
+
+function spin() {
+    if (isSpinning) return;
+    isSpinning = true;
+    resultDiv.textContent = '🔄 КРУТИТСЯ...';
+    
+    const fullRotations = 12 + Math.random() * 8;
+    const randomStop = Math.random() * Math.PI * 2;
+    const targetDelta = fullRotations * 2 * Math.PI + randomStop;
+    const targetAngle = currentAngle + targetDelta;
+    
+    animate({
+        from: currentAngle,
+        to: targetAngle,
+        duration: 6000,
+        easing: 'cubic-bezier(0.15, 0.85, 0.3, 1)',
+        onUpdate: (value) => {
+            currentAngle = value;
+            drawWheel(currentAngle);
+        },
+        onComplete: () => {
+            currentAngle = targetAngle % (Math.PI * 2);
+            drawWheel(currentAngle);
+            
+            const idx = getWinnerIndex(currentAngle);
+            const prize = SEGMENTS[idx];
+            resultDiv.textContent = `${prize.name} | ${prize.value} 💀`;
+            isSpinning = false;
+        }
+    });
+}
+
+// Инициализация
+drawWheel(0);
+spinBtn.addEventListener('click', spin);
