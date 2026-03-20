@@ -1,66 +1,26 @@
-<canvas id="wheelCanvas" width="600" height="600"></canvas>
-<button id="spinBtn">КРУТИТЬ</button>
-<div id="result"></div>
-
-<script type="importmap">
-  {
-    "imports": {
-      "@in/motion": "https://esm.sh/@in/motion@0.7.0"
-    }
-  }
-</script>
-
-<script type="module">
-  import { animate } from '@in/motion';
-
-  const canvas = document.getElementById('wheelCanvas');
-  const ctx = canvas.getContext('2d');
-  const resultDiv = document.getElementById('result');
-  
-  const segments = 8;
-  let currentAngle = 0;
-  
-  // Рисуем колесо
-  function drawWheel(angle) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const angleStep = (Math.PI * 2) / segments;
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Готическая рулетка</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="roulette-container">
+        <button class="gothic-button" id="spinBtn">КРУТИТЬ</button>
+        
+        <div class="wheel-wrapper">
+            <canvas id="rouletteWheel" width="600" height="600"></canvas>
+            <div class="arrow-pointer"></div>
+        </div>
+        
+        <div class="result-scroll" id="result">
+            <p class="metal-text" id="resultText">🖤</p>
+        </div>
+    </div>
     
-    for (let i = 0; i < segments; i++) {
-      const start = i * angleStep + angle;
-      const end = (i + 1) * angleStep + angle;
-      
-      ctx.beginPath();
-      ctx.moveTo(300, 300);
-      ctx.arc(300, 300, 280, start, end);
-      ctx.fillStyle = `hsl(${i * 45}, 80%, 60%)`;
-      ctx.fill();
-      ctx.stroke();
-    }
-  }
-  
-  // Анимация с физикой
-  function spinWheel() {
-    const targetAngle = currentAngle + (Math.random() * 720 + 1440); // 4-8 оборотов
-    
-    animate({
-      from: currentAngle,
-      to: targetAngle,
-      duration: 4000,
-      easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)', // ← ключевое! естественное замедление[citation:1][citation:6]
-      onUpdate: (value) => {
-        currentAngle = value;
-        drawWheel(currentAngle);
-      },
-      onComplete: () => {
-        // Определяем выигрыш
-        const pointerAngle = Math.PI / 2; // стрелка сверху
-        const normalizedAngle = (pointerAngle - currentAngle + 2 * Math.PI) % (2 * Math.PI);
-        const winnerIndex = Math.floor((normalizedAngle / (2 * Math.PI)) * segments);
-        resultDiv.textContent = `Выигрыш: сектор ${winnerIndex + 1}`;
-      }
-    });
-  }
-  
-  drawWheel(0);
-  document.getElementById('spinBtn').onclick = spinWheel;
-</script>
+    <script src="script.js"></script>
+</body>
+</html>
